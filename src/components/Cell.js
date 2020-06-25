@@ -5,13 +5,12 @@ const Square = styled.div`
 width: auto;
 background: rgba(${ props => props.background },0.8);
 border: ${ props => props.type === 0 ? "0px solid" : "4px solid" };
-border-color: rgba(${ props => props.color },0.5);
+border-color: rgba(${ props => props.background },0.5);
 `;
 
 const Cell = ({type}) =>{
-    console.log("hh",Slices['L']);
     return(
-        <Square type={'L'} background={Slices['L'].color}>cell</Square>
+        <Square type={type} background={Slices[type].color} />
     )
 }
 export default Cell;
