@@ -59,6 +59,6 @@ export const Slices = {
 };
 export const randomSlice = () => {
   const slices = "IJLOSTZ";
-  const randSlice = slices[Math.floor(math.random() * slices.length)];
+  const randSlice = slices[Math.floor(Math.random() * slices.length)];
   return slices[randSlice];
 };
