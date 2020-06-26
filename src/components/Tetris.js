@@ -28,11 +28,30 @@ const Menu = styled.div`
 `;
 
 const Tetris = () => {
-  const player = usePlayer();
+  const [player, updatePlayerPosition, resetPlayer] = usePlayer();
   const [stage, setStage] = useStage(player);
+  const [end,setEnd] = useState(false);
+
+  const movePlayer = (direction) =>{
+    updatePlayerPosition({x:direction, y:0});
+  }
+console.log(player);
+  const handleMove = ({keyCode}) =>{
+    if(!end) {
+      switch(keyCode)
+      {
+        case 37: resetPlayer();
+        break;
+        case 39: movePlayer(1);
+        break;
+        case 40:console.log('drop');
+        break;
+      }
+    }
+  }
 
   return (
-    <Container>
+    <Container role="button" tabIndex="0" onKeyDown={(e) => handleMove(e) }>
       <TetrisWrapper>
         <Stage stage={stage} />
         <div>
