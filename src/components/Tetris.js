@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Stage from "./Stage";
 import Display from "./Display";
 import Button from "../components/Button";
 import { createStage } from "../gameConfig";
 import styled from "styled-components";
+import usePlayer from "../hooks/usePlayer";
+import useStage from "../hooks/useStage";
 
 const Container = styled.div`
   width: 100vw;
@@ -26,16 +28,19 @@ const Menu = styled.div`
 `;
 
 const Tetris = () => {
+  const player = usePlayer();
+  const [stage, setStage] = useStage(player);
+
   return (
     <Container>
       <TetrisWrapper>
-        <Stage stage={createStage()} />
+        <Stage stage={stage} />
         <div>
           <Menu>
             <Display text="Score" />
             <Display text="Rows" />
             <Display text="Level" />
-            <Button text="Start"/>
+            <Button text="Start" />
           </Menu>
         </div>
       </TetrisWrapper>
