@@ -14,7 +14,6 @@ background: #111;
 `;
 
 const Stage = ({ stage }) =>{
-    console.log(stage.length);
     return(
         <Board width={stage[0].length} height={stage.length}>{stage.map((row) => row.map((cell, index) => <Cell key={index} type={cell[0]}/>))}</Board>
     )

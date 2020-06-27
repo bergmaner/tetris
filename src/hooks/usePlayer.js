@@ -1,11 +1,11 @@
 import { useState, useCallback } from "react";
-import { randomSlice } from "../slices";
+import { randomSlice, Slices } from "../slices";
 import { STAGE_WIDTH } from "../gameConfig";
 
 const usePlayer = () => {
   const [player, setPlayer] = useState({
     pos: { x: 0, y: 0 },
-    slice: randomSlice().shape,
+    slice: Slices[0].shape,
     collide: false,
   });
   const updatePlayerPosition = ({ x, y, collide }) =>{
@@ -18,7 +18,7 @@ const usePlayer = () => {
   }
   const resetPlayer = useCallback(()=>{
     setPlayer({
-      pos: {x:0, y:0},
+      pos: {x:STAGE_WIDTH /2 -2, y:0},
       slice: randomSlice().shape,
       collide: false
 
