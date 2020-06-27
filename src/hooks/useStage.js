@@ -42,6 +42,6 @@ const useStage = (player, resetPlayer) => {
     setStage((prev) => updateStage(prev));
   }, [player]);
 
-  return [stage, setStage];
+  return [stage, setStage, rowsCount];
 };
 export default useStage;
