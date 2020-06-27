@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Stage from "./Stage";
 import Display from "./Display";
 import Button from "../components/Button";
-import { createStage } from "../gameConfig";
+import { createStage, checkCollision } from "../gameConfig";
 import styled from "styled-components";
 import usePlayer from "../hooks/usePlayer";
 import useStage from "../hooks/useStage";
@@ -33,16 +33,23 @@ const Tetris = () => {
   const [end, setEnd] = useState(false);
 
   const movePlayer = (direction) => {
-    updatePlayerPosition({ x: direction, y: 0 });
+    console.log("h");
+    if (!checkCollision(player, stage, { x: direction, y: 0 }))
+      updatePlayerPosition({ x: direction, y: 0 });
   };
 
-const handleStart = () =>{
-  setStage(createStage());
-  resetPlayer();
-}
+  const dropPlayer = () => {
+    if (!checkCollision(player, stage, { x: 0, y: 1 }))
+    updatePlayerPosition({ x: 0, y: 1, collide:false });
+  };
 
-  console.log(player);
+  const handleStart = () => {
+    setStage(createStage());
+    resetPlayer();
+  };
+
   const handleMove = ({ keyCode }) => {
+    console.log("hh");
     if (!end) {
       switch (keyCode) {
         case 37:
@@ -52,7 +59,7 @@ const handleStart = () =>{
           movePlayer(1);
           break;
         case 40:
-          console.log("drop");
+          dropPlayer();
           break;
       }
     }

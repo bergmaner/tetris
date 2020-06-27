@@ -20,12 +20,14 @@ const useStage = ( player, resetPlayer ) => {
             }
           });
         });
-   console.log(updatedStage)
+
       return updatedStage;
     };
-
+if(player.collide){
+  resetPlayer();
+}
     setStage((prev) => updateStage(prev));
-  }, [player.collide,player.pos.x,player.pos.y,player.slice]);
+  }, [player]);
 
   return [stage, setStage];
 };

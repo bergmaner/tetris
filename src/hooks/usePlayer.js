@@ -8,14 +8,14 @@ const usePlayer = () => {
     slice: Slices[0].shape,
     collide: false,
   });
-  const updatePlayerPosition = ({ x, y, collide }) =>{
+  const updatePlayerPosition = useCallback(({ x, y, collide })=>{
     setPlayer(prev =>({
       ...prev,
-      pos:{x: ( prev.pos.x += x ), y: ( prev.pos.y += y ) },
+      pos:{x: ( prev.pos.x += x/2 ), y: ( prev.pos.y += y/2 ) },
       collide
     }))
 
-  }
+  }) 
   const resetPlayer = useCallback(()=>{
     setPlayer({
       pos: {x:STAGE_WIDTH /2 -2, y:0},
