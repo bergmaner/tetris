@@ -10,18 +10,15 @@ const usePlayer = () => {
   });
 
   const rotate = (matrix, direction) => {
-    console.log("mat", matrix);
     const rotatedSlice = matrix.map((m, index) =>
       matrix.map((col) => col[index])
     );
-    console.log("RS", rotatedSlice);
     if (direction > 0) return rotatedSlice.map((row) => row.reverse());
     return rotatedSlice.reverse();
   };
 
   const rotatePlayer = (stage, direction) => {
     const clone = JSON.parse(JSON.stringify(player));
-    console.log("clone");
     clone.slice = rotate(clone.slice, direction);
     const posX = clone.pos.x;
     let offset = 1;

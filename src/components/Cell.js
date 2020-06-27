@@ -10,7 +10,7 @@ border-color: rgba(${ props => props.background },0.5);
 
 const Cell = ({type}) =>{
     return(
-        <Square type={type} background={Slices[type].color} />
+    <Square type={type} background={Slices[type].color} />
     )
 }
-export default Cell;
+export default React.memo(Cell);

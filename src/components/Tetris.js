@@ -4,9 +4,10 @@ import Display from "./Display";
 import Button from "../components/Button";
 import { createStage, checkCollision } from "../gameConfig";
 import styled from "styled-components";
-import useInterval from "../hooks/useInterval"
+import useInterval from "../hooks/useInterval";
 import usePlayer from "../hooks/usePlayer";
 import useStage from "../hooks/useStage";
+import useStatus from "../hooks/useStatus";
 
 const Container = styled.div`
   width: 100vw;
@@ -30,7 +31,8 @@ const Menu = styled.div`
 
 const Tetris = () => {
   const [player, updatePlayerPosition, resetPlayer, rotatePlayer] = usePlayer();
-  const [stage, setStage] = useStage(player, resetPlayer);
+  const [stage, setStage, rowsCount] = useStage(player, resetPlayer);
+  const [score, setScore, rows, setRows, level, setLevel] = useStatus(rowsCount);
   const [dropInterval, setDropInterval] = useState(null);
   const [end, setEnd] = useState(false);
 
@@ -39,44 +41,52 @@ const Tetris = () => {
     setDropInterval(1000);
     resetPlayer();
     setEnd(false);
+    setScore(0);
+    setRows(0);
+    setLevel(0);
   };
   const drop = () => {
+    if(rows > (level + 1) * 10){
+      setLevel(prev=>prev + 1)
+      setDropInterval(1000/(level + 1) + 200)
+    }
     if (!checkCollision(player, stage, { x: 0, y: 1 }))
       updatePlayerPosition({ x: 0, y: 1, collide: false });
     else {
-      if(player.pos.y < 1){
+      if (player.pos.y < 1) {
         setEnd(true);
         setDropInterval(null);
       }
-     
+
       updatePlayerPosition({ x: 0, y: 0, collide: true });
     }
   };
-const handleDrop = () =>{
-  setDropInterval(null);
-  drop();
-}
+  const handleDrop = () => {
+    setDropInterval(null);
+    drop();
+  };
 
-const handleKeyUp = ({keyCode}) =>{
-if(keyCode === 40){
-  setDropInterval(1000);
-}
-}
+  const handleKeyUp = ({ keyCode }) => {
+    if (!end) {
+      if (keyCode === 40) {
+        setDropInterval(1000);
+      }
+    }
+  };
 
-const movePlayer = (direction) => {
-  if (!checkCollision(player, stage, { x: direction, y: 0 }))
-    updatePlayerPosition({ x: direction, y: 0 });
-};
+  const movePlayer = (direction) => {
+    if (!checkCollision(player, stage, { x: direction, y: 0 }))
+      updatePlayerPosition({ x: direction, y: 0 });
+  };
 
   const handleMove = ({ keyCode }) => {
-    console.log(end,"end");
     if (!end) {
       switch (keyCode) {
         case 37:
           movePlayer(-1);
           break;
-          case 38: 
-          rotatePlayer(stage,1)
+        case 38:
+          rotatePlayer(stage, 1);
           break;
         case 39:
           movePlayer(1);
@@ -87,19 +97,33 @@ const movePlayer = (direction) => {
       }
     }
   };
-  useInterval(()=>{
+  useInterval(() => {
     drop();
-  },dropInterval)
+  }, dropInterval);
   return (
-    <Container role="button" tabIndex="0" onKeyDown={(e) => handleMove(e) } onKeyUp={handleKeyUp}>
+    <Container
+      role="button"
+      tabIndex="0"
+      onKeyDown={(e) => handleMove(e)}
+      onKeyUp={handleKeyUp}
+    >
       <TetrisWrapper>
         <Stage stage={stage} />
         <div>
           <Menu>
-            <Display text="Score" />
-            <Display text="Rows" />
-            <Display text="Level" />
-            <Button handleClick={handleStart} text="Start" />
+            {end ? (
+              <div>
+                <Display gameOver={end} text="Game Over" />
+                <Button handleClick={handleStart} text="Restart" />
+              </div>
+            ) : (
+              <div>
+                <Display text={`Score: ${score}`} />
+                <Display text={`Rows: ${rows}`} />
+                <Display text={`Level: ${level}`} />
+                <Button handleClick={handleStart} text="Start" />
+              </div>
+            )}
           </Menu>
         </div>
       </TetrisWrapper>

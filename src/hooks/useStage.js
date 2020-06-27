@@ -7,9 +7,9 @@ const useStage = (player, resetPlayer) => {
   useEffect(() => {
     const sweep = (newStage) =>
       newStage.reduce((result, row) => {
+        setRowsCount(0);
         if (row.findIndex((cell) => cell[0] === 0) === -1) {
           setRowsCount((prev) => prev + 1);
-          console.log("rows", rowsCount);
           result.unshift(new Array(newStage[0].length).fill([0, "clear"]));
           return result;
         }
