@@ -10,32 +10,32 @@ const usePlayer = () => {
   });
 
   const rotate = (matrix, direction) => {
-    console.log("mat",matrix)
-    const rotatedSlice = matrix.map((m, index) => 
+    console.log("mat", matrix);
+    const rotatedSlice = matrix.map((m, index) =>
       matrix.map((col) => col[index])
-    )
-    console.log("RS",rotatedSlice)
+    );
+    console.log("RS", rotatedSlice);
     if (direction > 0) return rotatedSlice.map((row) => row.reverse());
     return rotatedSlice.reverse();
   };
 
-const rotatePlayer = (stage, direction) =>{
-const clone = JSON.parse(JSON.stringify(player));
-console.log("clone")
-clone.slice = rotate(clone.slice,direction);
-const posX = clone.pos.x;
-let offset = 1;
-while(checkCollision(clone,stage,{x:0,y:0})){
-  clone.pos.x += offset;
-  offset = -(offset+(offset>0 ? 1 : -1))
-  if(offset > clone.slice[0].length){
-    rotate(clone.slice, -direction)
-    clone.pos.x = posX;
-    return;
-  }
-}
-setPlayer(clone);
-}
+  const rotatePlayer = (stage, direction) => {
+    const clone = JSON.parse(JSON.stringify(player));
+    console.log("clone");
+    clone.slice = rotate(clone.slice, direction);
+    const posX = clone.pos.x;
+    let offset = 1;
+    while (checkCollision(clone, stage, { x: 0, y: 0 })) {
+      clone.pos.x += offset;
+      offset = -(offset + (offset > 0 ? 1 : -1));
+      if (offset > clone.slice[0].length) {
+        rotate(clone.slice, -direction);
+        clone.pos.x = posX;
+        return;
+      }
+    }
+    setPlayer(clone);
+  };
 
   const updatePlayerPosition = useCallback(({ x, y, collide }) => {
     setPlayer((prev) => ({
