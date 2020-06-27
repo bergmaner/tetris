@@ -28,7 +28,7 @@ const Menu = styled.div`
 `;
 
 const Tetris = () => {
-  const [player, updatePlayerPosition, resetPlayer] = usePlayer();
+  const [player, updatePlayerPosition, resetPlayer, rotatePlayer] = usePlayer();
   const [stage, setStage] = useStage(player, resetPlayer);
   const [end, setEnd] = useState(false);
 
@@ -40,20 +40,32 @@ const Tetris = () => {
 
   const dropPlayer = () => {
     if (!checkCollision(player, stage, { x: 0, y: 1 }))
-    updatePlayerPosition({ x: 0, y: 1, collide:false });
+      updatePlayerPosition({ x: 0, y: 1, collide: false });
+    else {
+      if(player.pos.y < 1){
+        setEnd(true);
+        console.log("GameOver")
+      }
+     
+      updatePlayerPosition({ x: 0, y: 0, collide: true });
+    }
   };
 
   const handleStart = () => {
     setStage(createStage());
     resetPlayer();
+    setEnd(false);
   };
-
+console.log("player", player)
   const handleMove = ({ keyCode }) => {
-    console.log("hh");
+    console.log(end,"end");
     if (!end) {
       switch (keyCode) {
         case 37:
           movePlayer(-1);
+          break;
+          case 38: 
+          rotatePlayer(stage,1)
           break;
         case 39:
           movePlayer(1);
