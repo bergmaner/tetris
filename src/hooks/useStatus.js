@@ -14,7 +14,7 @@ const useStatus = (rowsCount) => {
   }, [level, points, rowsCount]);
   useEffect(() => {
     calcScore();
-  }, [calcScore, rowsCount, score]);
+  }, [rowsCount]);
   return [score, setScore, rows, setRows, level, setLevel];
 };
 export default useStatus;
