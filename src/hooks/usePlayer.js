@@ -37,7 +37,7 @@ const usePlayer = () => {
   const updatePlayerPosition = useCallback(({ x, y, collide }) => {
     setPlayer((prev) => ({
       ...prev,
-      pos: { x: (prev.pos.x += x / 2), y: (prev.pos.y += y / 2) },
+      pos: { x: prev.pos.x += x , y: prev.pos.y += y },
       collide,
     }));
   });
